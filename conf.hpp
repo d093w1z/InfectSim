@@ -1,19 +1,40 @@
+#include <SFML/Graphics.hpp>
+#include <unordered_map>
 /*
-*	Convert from Macro based to Object based
-*/
+ */
 #pragma once
 
 #define VERSION 0.1
 
-#define MAX_POP 5
+enum Status { Vulnerable, Infected, Immune, Dead };
 
-#define MAX_WIDTH  500
-#define MAX_HEIGHT 400
+struct Conf {
+  const static uint32_t MAX_HEIGHT;
+  const static uint32_t MAX_WIDTH;
+  const static uint32_t MAX_POP;
+  const static uint32_t SIM_HOURS;
+  const static uint32_t INFECTION_DUR;
+  const static uint32_t INITIAL_INFECTIONS;
+  const static float INFECTION_PROBABILITY;
+  const static float NORMAL_FATALITY_RATE;
+  const static float SATURATION_FATALITY_RATE;
+  const static float SATURATION_THRESHOLD;
+  const static float INFECTION_PROXIMITY;
 
-enum Status
-{
-	Vulnerable,
-	Infected,
-	Immune,
-	Dead
+  const static sf::Color &getColorFromMap(enum Status);
+
+private:
+  Conf();
+  Conf(const Conf &a) = delete;
+  Conf &operator=(Conf &) = delete;
+
+  inline const static std::unordered_map<enum Status, sf::Color> ColorMap() {
+    const static std::unordered_map<enum Status, sf::Color> ColorMap = {
+        {Vulnerable, sf::Color::Green},
+        {Infected, sf::Color::Red},
+        {Immune, sf::Color::Blue},
+        {Dead, sf::Color::White},
+    };
+    return ColorMap;
+  }
 };

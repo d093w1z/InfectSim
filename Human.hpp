@@ -5,13 +5,17 @@
 class Human{
 
 	int mID;
-	static int sID;
+	sf::CircleShape mShape;
 	enum Status mStatus = Status::Vulnerable;
+	sf::Vector2i mPos;
 
 public:
-	Human(){mID = ++sID;}
-	void move(){std::cout << mID<<" moved!"<<std::endl;}
-	void getCount(){std::cout<<sID<<std::endl;}
+	static int& sGetCount();
+	sf::Vector2f getPos(){return mShape.getPosition();}
+	void setStatus(enum Status);
+	Human();
+	~Human();
+	void mRenderHuman(sf::RenderWindow&);
+	void mMove(sf::Vector2i);
 };
 
-int Human::sID = 0;

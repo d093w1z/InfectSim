@@ -4,14 +4,26 @@
 #include "conf.hpp"
 
 simObj::simObj()
-: mWindow(sf::VideoMode(MAX_WIDTH, MAX_HEIGHT), "basicGame beta 0.1")
+: mWindow(sf::VideoMode(Conf::MAX_WIDTH, Conf::MAX_HEIGHT), "basicGame beta 0.1")
 {
-	
-	humans.reserve(MAX_POP);
-	for(int i = 0; i< MAX_POP;i++)
+	infection_history.reserve(Conf::SIM_HOURS);
+	humans.reserve(Conf::MAX_POP);
+	Human * h;
+	for(uint32_t i = 0; i< Conf::MAX_POP;i++)
 	{
-		Human h;
+		h = new Human();
 		humans.push_back(h);
+	}
+	for(uint32_t i = 0; i< Conf::INITIAL_INFECTIONS;i++)
+	{
+		humans[i]->setStatus(Status::Infected);
+	}
+}
+
+simObj::~simObj(){
+	for(auto h: humans)
+	{
+		delete h;
 	}
 }
 
@@ -27,15 +39,20 @@ void simObj::run()
 
 void simObj::update()
 {
+	sf::Vector2i v(0,0);
 	for(auto it: humans)
 	{
-		it.move();
+		it->mMove(v);
 	}
 }
 
 void simObj::render()
 {
 	mWindow.clear();
+	for(auto it: humans)
+	{
+		it->mRenderHuman(mWindow);
+	}
 	mWindow.display();
 }
 
@@ -47,6 +64,14 @@ void simObj::handleEvents()
 		switch(event.type){
 			case sf::Event::Closed:
 				mWindow.close();
+				break;
+			case sf::Event::KeyPressed:
+				if(event.key.code == sf::Keyboard::P){
+					for(auto it: infection_history)
+					{
+						std::cout<<it<<std::endl;
+					}
+				}
 				break;
 		}
 	}
