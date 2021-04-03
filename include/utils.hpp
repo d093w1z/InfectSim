@@ -36,6 +36,7 @@ inline T  gRandom(){
 	return r;
 }
 
+
 template<typename T>
 bool gChance(T prob)
 {

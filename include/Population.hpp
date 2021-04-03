@@ -4,6 +4,8 @@
 */
 #include "Human.hpp"
 #include "conf.hpp"
+#include "MobilityModel.hpp"
+#include "utils.hpp"
 #include <vector>
 class Population {
   std::vector<Human *> humans;
@@ -13,6 +15,6 @@ public:
   Population();
   ~Population();
   void renderPopulation(sf::RenderWindow &pWindow);
-  void movePopulation();
+  void movePopulation(float);
   void stepInfection();
 };

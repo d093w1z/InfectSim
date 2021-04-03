@@ -12,13 +12,14 @@ CPPFLAGS := -Wall -g -Wno-switch -I$(INCLDIR)
 LD = g++
 LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 
-PROG = $(BIN)/InfectSim
+PROG 	:= $(BIN)/InfectSim
 SRCS    := $(wildcard $(SRCDIR)/*.cpp)
-OBJS := $(SRCS:%.cpp=%.o)
+OBJS 	:= $(SRCS:%.cpp=%.o)
+OBJS 	:= $(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(OBJS))
 
 .PHONY: all run clean
 
-all: $(PROG)
+all: $(PROG) run
 
 $(PROG): $(OBJS) | $(BIN)
 	$(CC) $^ -o $@ $(LDFLAGS)
@@ -29,8 +30,8 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.cpp  | $(OBJDIR)
 $(BIN) $(OBJDIR):
 	$(MKDIR) $@
 
-run: $(EXE)
-	$<
+run: $(PROG)
+	./$<
 
 clean:
-	$(RMDIR) $(OBJ) $(BIN)
+	$(RMDIR) $(OBJDIR) $(BIN)
