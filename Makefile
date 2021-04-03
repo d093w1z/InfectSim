@@ -1,28 +1,36 @@
+
+RMDIR = rm -rf
+MKDIR = mkdir -p
+
+SRCDIR = ./src
+INCLDIR ?= ./include
+OBJDIR = ./obj
+BIN = ./bin
+
 CC = g++
-CFLAGS = -Wall -g -Wno-switch
+CPPFLAGS := -Wall -g -Wno-switch -I$(INCLDIR)
 LD = g++
 LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 
-PROG = InfectSim
-SRCS = conf.cpp main.cpp simObj.cpp Human.cpp
-HDRS = conf.hpp Human.hpp simObj.hpp utils.hpp
+PROG = $(BIN)/InfectSim
+SRCS    := $(wildcard $(SRCDIR)/*.cpp)
+OBJS := $(SRCS:%.cpp=%.o)
 
-OBJS = $(SRCS:.cpp=.o)
+.PHONY: all run clean
 
-$(PROG): $(OBJS)
-	$(CC) $(OBJS) -o $(PROG) $(LDFLAGS)
+all: $(PROG)
 
-main.o: main.cpp simObj.hpp utils.hpp
-	$(CC) $(CFLAGS) -c main.cpp -o main.o
+$(PROG): $(OBJS) | $(BIN)
+	$(CC) $^ -o $@ $(LDFLAGS)
 
-simObj.o: simObj.hpp simObj.cpp Human.hpp conf.hpp
-	$(CC) $(CFLAGS) -c simObj.cpp -o simObj.o
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp  | $(OBJDIR)
+	$(CC) $(CPPFLAGS) -c $< -o $@
 
-conf.o: conf.cpp conf.hpp
-	$(CC) $(CFLAGS) -c conf.cpp -o conf.o
+$(BIN) $(OBJDIR):
+	$(MKDIR) $@
 
-Human.o: Human.cpp Human.hpp conf.hpp utils.hpp
-	$(CC) $(CFLAGS) -c Human.cpp -o Human.o
+run: $(EXE)
+	$<
 
 clean:
-	rm -f core $(PROG) $(OBJS)
+	$(RMDIR) $(OBJ) $(BIN)

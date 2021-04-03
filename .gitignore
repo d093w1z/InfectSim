@@ -1,2 +1,3 @@
-*.o
-InfectSim
+bin
+obj
+

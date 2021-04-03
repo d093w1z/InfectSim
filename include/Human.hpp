@@ -8,7 +8,6 @@ class Human{
 	sf::CircleShape mShape;
 	enum Status mStatus = Status::Vulnerable;
 	sf::Vector2i mPos;
-
 public:
 	static int& sGetCount();
 	sf::Vector2f getPos(){return mShape.getPosition();}

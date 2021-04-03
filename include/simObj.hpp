@@ -4,11 +4,11 @@
 
 #include "Human.hpp"
 #include "conf.hpp"
+#include "Population.hpp"
 
 class simObj{
 	sf::RenderWindow mWindow;
-	std::vector<Human *> humans;
-	std::vector<int> infection_history = std::vector<int>( Conf::SIM_HOURS, 0);
+	Population mPop;
 
 public:
 	simObj();

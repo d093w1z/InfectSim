@@ -1,6 +1,7 @@
 #include "Human.hpp"
 #include "utils.hpp"
 
+
 Human::Human() {
   mStatus = Status::Vulnerable;
   mShape.setPosition(sf::Vector2f(gRandom((int)Conf::MAX_WIDTH),
